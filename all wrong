@@ -1,0 +1,15 @@
+def getWrongAnswers(N: int, C: str) -> str:
+  # Write your code here
+  return ''
+def getWrongAnswers(N, C):
+    wrong_answers = ''
+    for i in range(N):
+        if C[i] == 'A':
+            wrong_answers += 'B'
+        else:
+            wrong_answers += 'A'
+    return wrong_answers
+  
+  result = getWrongAnswers(3, "ABA")
+print(result)  # This will print 'BAB' ended up printing ABA
+# need to go back and debug I think I may have an indent out of sorts
