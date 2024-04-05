@@ -1,0 +1,34 @@
+def getMaxAdditionalDinersCount(N: int, K: int, M: int, S: List[int]) -> int:
+    S.sort()
+    additional_diners = 0
+
+    # Edge case: no diners yet
+    if M == 0:
+        return (N + K) // (K + 1)
+
+    # Initial potential spot before the first seated diner
+    prev_seat = 0
+
+    # Iterate through each seated diner
+    for seat in S:
+        # Calculate the gap between the previous spot and the current diner's seat
+        gap = seat - prev_seat - 1
+        # Calculate the number of additional diners that can be seated in this gap
+        additional_diners += max(0, gap - K) // (K + 1)
+        # Update the previous spot to be K seats to the right of the current diner
+        prev_seat = seat + K
+
+    # Handle the segment after the last diner
+    gap = N - prev_seat
+    additional_diners += max(0, gap - K) // (K + 1)
+
+    return additional_diners
+
+# Test the function with the provided inputs
+N = 15  # Example input, can be up to 10^15
+K = 2
+M = 3
+S = [11, 6, 14]
+
+additional_seats = getMaxAdditionalDinersCount(N, K, M, S)
+print(additional_seats)
