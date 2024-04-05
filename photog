@@ -1,0 +1,27 @@
+def getArtisticPhotographCount(N: int, C: str, X: int, Y: int) -> int:
+    count = 0
+    photographers, actors, backdrops = [], [], []
+
+    for i in range(N):
+        if C[i] == 'P':
+            photographers.append(i)
+        elif C[i] == 'A':
+            actors.append(i)
+        elif C[i] == 'B':
+            backdrops.append(i)
+
+    for actor in actors:
+        valid_photographers = [p for p in photographers if X <= abs(actor - p) <= Y]
+        valid_backdrops = [b for b in backdrops if X <= abs(actor - b) <= Y]
+        count += len(valid_photographers) * len(valid_backdrops)
+
+    return count
+
+# Example test case
+N = 5
+C = "APABA"
+X = 1
+Y = 2
+
+# Calculate and display the number of artistic photographs
+print("Number of artistic photographs:", getArtisticPhotographCount(N, C, X, Y))
