@@ -1,0 +1,33 @@
+def getArtisticPhotographCount(N: int, C: str, X: int, Y: int) -> int:
+    artistic_count = 0
+    photographers_count = [0] * (N + 1)
+    backdrops_count = [0] * (N + 1)
+
+    # Count photographers cumulatively
+    for i in range(1, N + 1):
+        photographers_count[i] = photographers_count[i - 1] + (1 if C[i - 1] == 'P' else 0)
+    
+    # Count backdrops cumulatively from the end
+    for i in range(N - 1, -1, -1):
+        backdrops_count[i] = backdrops_count[i + 1] + (1 if C[i] == 'B' else 0)
+
+    # Iterate through each actor
+    for i in range(N):
+        if C[i] == 'A':
+            # Define the range for photographers and backdrops
+            photographers_range_start = max(0, i - Y)
+            photographers_range_end = max(0, i - X + 1)
+            backdrops_range_start = min(N, i + X)
+            backdrops_range_end = min(N, i + Y + 1)
+
+            photographers = photographers_count[photographers_range_end] - photographers_count[photographers_range_start]
+            backdrops = backdrops_count[backdrops_range_start] - backdrops_count[backdrops_range_end]
+            
+            artistic_count += photographers * backdrops
+
+    return artistic_count
+
+# Test cases
+print(getArtisticPhotographCount(5, "APABA", 1, 2)) # Expected: 1
+print(getArtisticPhotographCount(5, "APABA", 2, 3)) # Expected: 0
+print(getArtisticPhotographCount(8, ".PBAAP.B", 1, 3)) # Expected: 3
