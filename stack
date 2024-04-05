@@ -1,0 +1,24 @@
+from typing import List
+# Write any import statements here
+
+def getMinimumDeflatedDiscCount(N: int, R: List[int]) -> int:
+    deflations = 0
+
+    for i in range(N - 1):
+        # If the current disc is not smaller than the one below it
+        if R[i] >= R[i + 1]:
+            if R[i + 1] == 1:
+                # If the disc below is 1 inch, we cannot deflate further
+                return -1
+            # Calculate the deflation required
+            deflation_needed = R[i] - (R[i + 1] - 1)
+            deflations += deflation_needed
+            # Deflate the disc
+            R[i] = R[i + 1] - 1
+
+    return deflations
+
+# Test cases
+print(getMinimumDeflatedDiscCount(5, [2, 5, 3, 6, 5])) # Expected: 3
+print(getMinimumDeflatedDiscCount(3, [100, 100, 100])) # Expected: 2
+print(getMinimumDeflatedDiscCount(4, [6, 5, 4, 3])) # Expected: -1
