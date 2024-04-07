@@ -32,3 +32,34 @@ S = [11, 6, 14]
 
 additional_seats = getMaxAdditionalDinersCount(N, K, M, S)
 print(additional_seats)
+
+# REWORKED the issue
+
+
+
+
+from typing import List
+# Write any import statements here
+
+def getMaxAdditionalDinersCount(N: int, K: int, M: int, S: List[int]) -> int:
+    S.sort()
+    additional_diners = 0
+    prev_seat = 0  # Start with 0 to represent the left end of the table
+
+    for seat in S:
+        # Calculate distance from the previous diner, minus K seats on both sides
+        distance = seat - prev_seat - 1 - K
+        if distance > 0:
+            additional_diners += (distance - 1) // (K + 1) + 1
+        prev_seat = seat + K  # Update previous seat, considering K seats to the right
+
+    # Check for space after the last occupied seat
+    distance = N - prev_seat
+    if distance > 0:
+        additional_diners += (distance - 1) // (K + 1) + 1
+
+    return additional_diners
+
+# Test cases
+print(getMaxAdditionalDinersCount(10, 1, 2, [2, 6]))  # Expected: 3
+print(getMaxAdditionalDinersCount(15, 2, 3, [11, 6, 14]))  # Expected: 1
