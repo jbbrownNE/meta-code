@@ -1,0 +1,29 @@
+from typing import List
+# Write any import statements here
+
+def getMaxExpectedProfit(N: int, V: List[int], C: int, S: float) -> float:
+    # dp[i] will store the maximum expected profit on day i
+    dp = [0.0] * (N + 1)
+    
+    # Calculate the expected profit for each day
+    for i in range(1, N + 1):
+        # Initially set the profit for the day as if no mail room visit occurs
+        dp[i] = (1 - S) * dp[i - 1]
+        accumulated_value = 0
+
+        # Consider visiting the mail room on any of the previous days
+        for j in range(i, 0, -1):
+            accumulated_value += V[j - 1]
+            # Calculate the profit if visiting the mail room on the j-th day
+            expected_profit = accumulated_value - C + dp[j - 1] * (1 - S)
+            # Update the maximum profit for the i-th day
+            dp[i] = max(dp[i], expected_profit)
+    
+    # Round the result to 6 decimal places
+    return round(dp[N], 6)
+
+# Test cases
+print(getMaxExpectedProfit(5, [10, 2, 8, 6, 4], 5, 0.0))  # Expected: 25.000000
+print(getMaxExpectedProfit(5, [10, 2, 8, 6, 4], 5, 1.0))  # Expected: 9.000000
+print(getMaxExpectedProfit(5, [10, 2, 8, 6, 4], 3, 0.5))  # Expected: 17.000000
+print(getMaxExpectedProfit(5, [10, 2, 8, 6, 4], 3, 0.15))  # Expected: 20.108250
